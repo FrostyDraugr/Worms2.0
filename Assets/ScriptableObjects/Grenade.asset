@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2fcd9298e6857a8498c8dd9a2d43e2fe, type: 3}
+  m_Name: Grenade
+  m_EditorClassIdentifier: 
+  Name: Grenade
+  Damage: 100
+  Ammo: 1
+  Model: {fileID: 3742748739083067511, guid: 9560cfe478da148459867aa2c651f985, type: 3}
+  _Type: 1
+  Lifetime: 5
+  Radius: 2
