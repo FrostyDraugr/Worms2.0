@@ -24,8 +24,9 @@ public class GameManager : MonoBehaviour
     private int _team;
     private int _wormTeam;
     public bool GameLive;
-
     public Controllers.CharacterScript _cs;
+
+    private Managers.InputManager _im;
 
     [SerializeField]
     private GameObject _worm;
@@ -132,8 +133,19 @@ public class GameManager : MonoBehaviour
                 var WormD = _characters[i][l].
                 GetComponent<Controllers.CharacterScript>().State;
                 if (WormD == Controllers.CharacterScript.Mode.dead){
-                    
+                    _characters[i].RemoveAt(l);
+                        if (_characters[i].Count == 0){
+                        _characters.RemoveAt(i);
+                        }
+
+                    if (_characters.Count == 1){
+                        Debug.Log("Victory! " + _characters[0][0].transform.parent
+                        .name);
+                        GameLive = false;
+                    }
                 }
+
+
             }
         }
     }
