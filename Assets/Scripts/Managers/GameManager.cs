@@ -7,7 +7,7 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager _gameManager;
 
-    public List<List<GameObject>> _characters = new List<List<GameObject>>();
+    public List<TeamManager> _teams;
 
     //Keep track of the number of destroyable objects for physics calc
     public int Destroyables;
@@ -21,15 +21,19 @@ public class GameManager : MonoBehaviour
     public int NumOfWorms;
 
     //Control active worm
+    [SerializeField]
     private int _team;
+
+    [SerializeField]
     private int _wormTeam;
     public bool GameLive;
     public Controllers.CharacterScript _cs;
 
-    private Managers.InputManager _im;
+    public GameObject Worm;
 
-    [SerializeField]
-    private GameObject _worm;
+    public int teamId;
+
+    public int id;
 
     private void Awake() {
     if (_gameManager == null){
@@ -54,9 +58,7 @@ public class GameManager : MonoBehaviour
     }
 
     public void OnWormDeath(int id, bool activePlayer){
-        Debug.Log("Death Event");
         if (activePlayer){
-            Debug.Log("True");
             StartCoroutine(EndTurn());
         }
     }
@@ -72,28 +74,24 @@ public class GameManager : MonoBehaviour
     }
 
     private void Spawn(){
-        int id = 0;
+        id = 0;
+        teamId = 1;
+        _teams = new List<TeamManager>();
         for (int i = 0; i < NumOfTeams; i++){
-            _characters.Add(new List<GameObject>());
-            GameObject team = new GameObject();
-            Color tc = Random.ColorHSV(0f, 1f, 1f, 1f, 0.5f, 1f);
-            team.name = "Team" + (i + 1);
-                for (int l = 0; l < NumOfWorms; l++){
-                GameObject go = Instantiate (_worm, FindSpawnPos(), Quaternion.identity
-                , team.transform);
-                MeshRenderer _mr = go.GetComponent<MeshRenderer>();
-                _mr.material.color = tc;
-                go.GetComponent<Controllers.CharacterScript>().id = id;
-                id++;
-                //go.transform.SetParent(team.transform);
-                go.transform.rotation = Quaternion.Euler(0, Random.Range(0, 359), 0);
-                _characters[i].Insert(l, go);
-            }
+            _teams.Add(new TeamManager());
+            _teams[i].CreateTeam();
+            teamId++;
         }
         _team = 0;
-        _wormTeam = 0;
-        _cs = _characters[_team][_wormTeam].
+        _cs = _teams[_team].GetActiveWorm().
         GetComponent<Controllers.CharacterScript>();
+    }
+
+    public GameObject GenerateWorm(Transform transform){
+            GameObject go = Instantiate (GameManager._gameManager.Worm
+            , FindSpawnPos(), Quaternion.identity, transform);
+
+            return go;
     }
 
     private Vector3 FindSpawnPos(){
@@ -105,49 +103,49 @@ public class GameManager : MonoBehaviour
 
     public IEnumerator EndTurn(){
         GameLive = false;
-        yield return new WaitForSeconds(5);
+        yield return new WaitForSeconds(7);
         
-        RemoveDead();
-        
-        if (_team == _characters.Count - 1){
+
+        if (_team == _teams.Count - 1){
             _team = 0;
-                if (_wormTeam == _characters[_team].Count - 1){
-                    _wormTeam = 0;
-                } else {
-                    _wormTeam++;
-                }
         }else{
             _team++;
         }
-        _cs = _characters[_team][_wormTeam].
-        GetComponent<Controllers.CharacterScript>();
-        _cs.WormActive();
-        GameLive = true;
-    }
+            _teams[_team].nextWorm();
 
-    private void RemoveDead(){
+                _cs = _teams[_team].GetActiveWorm().
+                GetComponent<Controllers.CharacterScript>();
+            _cs.WormActive();
+            GameLive = true;
+        }
+
+/*      private void RemoveDead(){
         for (int i = 0; i < _characters.Count; i++)
         {
             for (int l = 0; l < _characters[i].Count; l++)
             {
                 var WormD = _characters[i][l].
-                GetComponent<Controllers.CharacterScript>().State;
-                if (WormD == Controllers.CharacterScript.Mode.dead){
+                GetComponent<Controllers.CharacterScript>();
+                if (WormD.State == Controllers.CharacterScript.Mode.dead){
                     _characters[i].RemoveAt(l);
                         if (_characters[i].Count == 0){
-                        _characters.RemoveAt(i);
+                            _characters.RemoveAt(i);
                         }
 
-                    if (_characters.Count == 1){
-                        Debug.Log("Victory! " + _characters[0][0].transform.parent
-                        .name);
-                        GameLive = false;
+                        if (_characters.Count == 1){
+                            Debug.Log("Victory! " + _characters[0][0].transform.parent
+                            .name);
+                            GameLive = false;
+                            StopAllCoroutines();
                     }
                 }
 
 
             }
         }
+    } */
+
     }
-}
+
+
 }
