@@ -1,16 +1,18 @@
 
 using UnityEngine;
-namespace WeaponSystems{
-
-public class Damaging : MonoBehaviour
+namespace WeaponSystems
 {
-    protected float _damage;
-    protected float _lifeDuration;
 
-    protected bool _hit;
+    public class Damaging : MonoBehaviour
+    {
+        protected float _damage;
+        protected float _lifeDuration;
 
-    void Awake(){
-        _hit = false;
+        protected bool _hit;
+
+        void Awake()
+        {
+            _hit = false;
+        }
     }
-}
 }

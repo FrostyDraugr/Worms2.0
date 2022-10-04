@@ -9,29 +9,35 @@ public class DestructibleMinor : MonoBehaviour
     [SerializeField]
     private Material[] _material;
     Rigidbody _rb;
-    
+
     [SerializeField]
     private float _life;
     private bool _destroyed;
 
-    void Awake(){
+    void Awake()
+    {
         _destroyed = false;
         _gm = Managers.GameManager._gameManager;
-        _rb = gameObject.GetComponent<Rigidbody>(); 
+        _rb = gameObject.GetComponent<Rigidbody>();
     }
-    public void Hit(float dmg, Vector3 point){
+    public void Hit(float dmg, Vector3 point)
+    {
         _life -= dmg;
-        if (_destroyed == false && _life <= 0 ){
+        if (_destroyed == false && _life <= 0)
+        {
             _destroyed = true;
-            if (_gm.Destroyables < 1024 && _gm.DestroyBool){
-            //Spawn effects here
-            _rb.isKinematic = false;
-            _gm.DestroyBool = false;
-            _rb.AddForce((point - transform.position) * (dmg * 4));
-            _gm.Destroyables++;
-            gameObject.layer = LayerMask.NameToLayer("Destroyed");
-            Destroy(gameObject, 6);  
-            } else {
+            if (_gm.Destroyables < 1024 && _gm.DestroyBool)
+            {
+                //Spawn effects here
+                _rb.isKinematic = false;
+                _gm.DestroyBool = false;
+                _rb.AddForce((point - transform.position) * (dmg * 4));
+                _gm.Destroyables++;
+                gameObject.layer = LayerMask.NameToLayer("Destroyed");
+                Destroy(gameObject, 6);
+            }
+            else
+            {
                 _gm.DestroyBool = true;
                 _gm.Destroyables++;
                 Destroy(gameObject);
@@ -39,7 +45,8 @@ public class DestructibleMinor : MonoBehaviour
         }
     }
 
-    private void OnDestroy() {
+    private void OnDestroy()
+    {
         _gm.Destroyables--;
     }
 }

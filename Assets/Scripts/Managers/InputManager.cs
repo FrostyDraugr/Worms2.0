@@ -1,54 +1,65 @@
 using UnityEngine;
 
-namespace Managers{
-public class InputManager : MonoBehaviour
+namespace Managers
 {
-    GameManager _gm;
-    Controllers.CameraController _cm;
-    private float _vertical;
-    private float _horizontal;
-    private void Start() {
-        _gm = Managers.GameManager._gameManager;
-        _cm = Controllers.CameraController._cC;
-    }
-    void Update()
+    public class InputManager : MonoBehaviour
     {
-        _vertical = Input.GetAxisRaw("Vertical");
-        _horizontal = Input.GetAxisRaw("Horizontal");
-        float zoomDelta = Input.GetAxis("Mouse ScrollWheel");
-        
-        if (zoomDelta != 0f){
-            _cm.AdjustZoom(-zoomDelta);
+        GameManager _gm;
+        Controllers.CameraController _cm;
+        private float _vertical;
+        private float _horizontal;
+        private void Start()
+        {
+            _gm = Managers.GameManager._gameManager;
+            _cm = Controllers.CameraController._cC;
         }
+        void Update()
+        {
+            _vertical = Input.GetAxisRaw("Vertical");
+            _horizontal = Input.GetAxisRaw("Horizontal");
+            float zoomDelta = Input.GetAxis("Mouse ScrollWheel");
 
-        if (_gm.GameLive == true){
-            if (Input.GetButtonDown("Fire1") ){
-                _gm._cs.Attack();
+            if (zoomDelta != 0f)
+            {
+                _cm.AdjustZoom(-zoomDelta);
             }
 
-            if (Input.GetButtonDown("Fire2")){
-                _gm._cs.SwitchWeapon();
-            }
+            if (_gm.GameLive == true)
+            {
+                if (Input.GetButtonDown("Fire1"))
+                {
+                    _gm._cs.Attack();
+                }
 
-            if (Input.GetButtonDown("Jump")){
-                _gm._cs.Jump();
+                if (Input.GetButtonDown("Fire2"))
+                {
+                    _gm._cs.SwitchWeapon();
+                }
+
+                if (Input.GetButtonDown("Jump"))
+                {
+                    _gm._cs.Jump();
+                }
+
+            }
         }
 
-     }
+        private void FixedUpdate()
+        {
+            //Change so everything is inside if _gm.GameLive == true
+            if (_gm.GameLive == true)
+            {
+                if (_vertical != 0)
+                {
+                    _gm._cs.MoveVertical(_vertical);
+                }
+
+                if (_horizontal != 0)
+                {
+                    _gm._cs.RotateOnAxis(_horizontal);
+                }
+            }
+        }
+
     }
-
-    private void FixedUpdate() {
-        //Change so everything is inside if _gm.GameLive == true
-        if (_gm.GameLive == true){
-            if (_vertical != 0){
-                _gm._cs.MoveVertical(_vertical);
-            }
-
-            if (_horizontal !=0){
-                _gm._cs.RotateOnAxis(_horizontal);
-            }
-        }
-    }
-        
-}
 }
