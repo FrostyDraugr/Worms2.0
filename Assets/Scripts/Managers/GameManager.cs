@@ -32,9 +32,9 @@ namespace Managers
 
         public GameObject Worm;
 
-        public int teamId;
+        public int TeamId;
 
-        public int id;
+        public int Id;
 
         private void Awake()
         {
@@ -62,7 +62,7 @@ namespace Managers
             Managers.EventManager._eventManager.OnDeathTrigger += OnWormDeath;
         }
 
-        public void OnWormDeath(int id, bool activePlayer)
+        public void OnWormDeath(int id, int teamId, bool activePlayer)
         {
             if (activePlayer)
             {
@@ -84,14 +84,15 @@ namespace Managers
 
         private void Spawn()
         {
-            id = 0;
-            teamId = 1;
+            Id = 0;
+            TeamId = 1;
             _teams = new List<TeamManager>();
             for (int i = 0; i < NumOfTeams; i++)
             {
                 _teams.Add(new TeamManager());
                 _teams[i].CreateTeam();
-                teamId++;
+                Id++;
+                TeamId++;
             }
             _team = 0;
             _cs = _teams[_team].GetActiveWorm().

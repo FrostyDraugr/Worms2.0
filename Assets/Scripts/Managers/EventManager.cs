@@ -7,7 +7,7 @@ namespace Managers
     {
         public static EventManager _eventManager;
 
-        public event Action<int, bool> OnDeathTrigger;
+        public event Action<int, int, bool> OnDeathTrigger;
 
         private void Awake()
         {
@@ -21,9 +21,9 @@ namespace Managers
             }
         }
 
-        public void DeathTrigger(int id, bool controlling)
+        public void DeathTrigger(int id, int teamId, bool controlling)
         {
-            OnDeathTrigger?.Invoke(id, controlling);
+            OnDeathTrigger?.Invoke(id, teamId, controlling);
         }
     }
 }

@@ -7,29 +7,28 @@ namespace Managers
     {
 
         private List<GameObject> _worms;
-
         private int _activeWorm;
+        private Color _teamColor = Random.ColorHSV(0f, 1f, 1f, 1f, 0.5f, 1f);
 
 
         public void CreateTeam()
         {
             _activeWorm = 0;
             GameObject team = new GameObject();
-            Color tc = Random.ColorHSV(0f, 1f, 1f, 1f, 0.5f, 1f);
-            team.name = "Team " + (GameManager._gameManager.teamId);
+            team.name = "Team " + (GameManager._gameManager.TeamId);
             _worms = new List<GameObject>();
             for (int i = 0; i < GameManager._gameManager.NumOfWorms; i++)
             {
-
                 GameObject go = GameManager._gameManager.
                 GenerateWorm(team.transform);
 
                 MeshRenderer _mr = go.GetComponent<MeshRenderer>();
-                _mr.material.color = tc;
+                _mr.material.color = _teamColor;
+                Controllers.CharacterScript comp = go.GetComponent<Controllers.
+                CharacterScript>();
 
-                go.GetComponent<Controllers.CharacterScript>().id =
-                GameManager._gameManager.id;
-                GameManager._gameManager.id++;
+                comp.Id = GameManager._gameManager.Id;
+                comp.TeamId = GameManager._gameManager.TeamId;
 
                 go.transform.rotation = Quaternion.Euler(0, Random.Range(0, 359), 0);
                 _worms.Add(go);

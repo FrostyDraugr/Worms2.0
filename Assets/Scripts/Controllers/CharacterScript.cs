@@ -36,7 +36,9 @@ namespace Controllers
 
         private WeaponController _wc;
 
-        public int id;
+        public int Id;
+
+        public int TeamId;
 
         private void Awake()
         {
@@ -62,13 +64,13 @@ namespace Controllers
             {
                 if (State == Mode.inactive)
                 {
-                    Debug.Log("Inactive Death");
-                    Managers.EventManager._eventManager.DeathTrigger(id, false);
+                    Managers.EventManager._eventManager
+                    .DeathTrigger(Id, TeamId, false);
                 }
                 else
                 {
-                    Debug.Log("Active Death");
-                    Managers.EventManager._eventManager.DeathTrigger(id, true);
+                    Managers.EventManager._eventManager
+                    .DeathTrigger(Id, TeamId, true);
                 }
                 State = Mode.dead;
             }
