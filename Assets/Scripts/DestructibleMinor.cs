@@ -31,7 +31,7 @@ public class DestructibleMinor : MonoBehaviour
                 //Spawn effects here
                 _rb.isKinematic = false;
                 _gm.DestroyBool = false;
-                _rb.AddForce((point - transform.position) * (dmg * 4));
+                _rb.AddForce((point - transform.position) * (dmg * 2));
                 _gm.Destroyables++;
                 gameObject.layer = LayerMask.NameToLayer("Destroyed");
                 Destroy(gameObject, 6);

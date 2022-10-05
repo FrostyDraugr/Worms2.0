@@ -38,8 +38,8 @@ public class Destructible : MonoBehaviour
                     gameObject.transform.position.y - (div * j) + offset + topOff,
                     gameObject.transform.position.z - (div * l) + offset);
                     _children[i, j, l] =
-                    Instantiate(_cube, pos, gameObject.transform.rotation);
-                    _children[i, j, l].transform.SetParent(gameObject.transform);
+                    Instantiate(_cube, pos, gameObject.transform.rotation,
+                    gameObject.transform);
                     _children[i, j, l].SetActive(false);
                 }
             }

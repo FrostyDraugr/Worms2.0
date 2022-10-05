@@ -60,14 +60,15 @@ namespace Managers
             Managers.EventManager._eventManager.OnDeathTrigger += OnWormDeath;
         }
 
-        public void OnWormDeath(Managers.TeamManager team, bool activePlayer)
+        public void OnWormDeath(Managers.TeamManager team, GameObject worm
+        , bool activePlayer)
         {
             if (activePlayer)
             {
                 StartCoroutine(EndTurn());
             }
 
-            //Handle Player Death
+            team.TeamWormDeath(worm);
         }
 
         private void Destroy()

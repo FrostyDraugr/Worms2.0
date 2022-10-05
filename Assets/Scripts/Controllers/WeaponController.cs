@@ -23,7 +23,9 @@ namespace Controllers
         {
             GameObject obj = Instantiate(Weapons[ChosenWeapon].Model, Vector3.zero,
             Quaternion.identity, WeaponSlot.transform);
-            obj.transform.localPosition = Vector3.zero; switch (Weapons[ChosenWeapon]._Type)
+            obj.transform.localPosition = Vector3.zero;
+            obj.transform.localRotation = Weapons[ChosenWeapon].Model.transform.rotation;
+            switch (Weapons[ChosenWeapon]._Type)
             {
                 case WeaponSystems.Weapon.Type.Grenade:
                     WeaponSystems.Explosive ex = obj.GetComponent<WeaponSystems.Explosive>();

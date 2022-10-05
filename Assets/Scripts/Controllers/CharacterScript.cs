@@ -59,7 +59,7 @@ namespace Controllers
 
         public void Hit(float dmg, Vector3 point)
         {
-            _rb.AddForce((transform.position - point + Vector3.up) * (dmg * 4));
+            _rb.AddForce((transform.position - point) * (dmg * 2), ForceMode.Impulse);
             Life -= dmg;
             if (Life <= 0 && State != Mode.dead)
             {
@@ -73,7 +73,7 @@ namespace Controllers
                     assigned = true;
                 }
                 Managers.EventManager._eventManager
-                .DeathTrigger(AssignedTeam, assigned);
+                .DeathTrigger(AssignedTeam, gameObject, assigned);
                 State = Mode.dead;
             }
         }

@@ -8,12 +8,14 @@ namespace Managers
 
         private List<GameObject> _worms;
         private int _activeWorm;
-        private Color _teamColor = Random.ColorHSV(0f, 1f, 1f, 1f, 0.5f, 1f);
-        public bool Alive = true;
+        private Color _teamColor;
+        public bool Alive;
 
 
         public void CreateTeam()
         {
+            _teamColor = Random.ColorHSV(0f, 1f, 1f, 1f, 0.5f, 1f);
+            Alive = true;
             _activeWorm = 0;
             GameObject team = new GameObject();
             team.name = "Team " + (GameManager._gameManager.TeamId);
@@ -37,11 +39,24 @@ namespace Managers
             return _worms[_activeWorm];
         }
 
-
+        public void TeamWormDeath(GameObject worm)
+        {
+            for (int i = 0; i < _worms.Count; i++)
+            {
+                if (_worms[i] = worm)
+                {
+                    _worms.RemoveAt(i);
+                    if (_worms.Count == 0)
+                    {
+                        this.Alive = false;
+                    }
+                }
+            }
+        }
 
         public void nextWorm()
         {
-            if (_activeWorm == _worms.Count - 1)
+            if (_activeWorm >= _worms.Count - 1)
             {
                 _activeWorm = 0;
             }
