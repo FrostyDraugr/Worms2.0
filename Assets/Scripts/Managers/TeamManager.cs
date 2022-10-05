@@ -9,6 +9,7 @@ namespace Managers
         private List<GameObject> _worms;
         private int _activeWorm;
         private Color _teamColor = Random.ColorHSV(0f, 1f, 1f, 1f, 0.5f, 1f);
+        public bool Alive = true;
 
 
         public void CreateTeam()
@@ -24,11 +25,7 @@ namespace Managers
 
                 MeshRenderer _mr = go.GetComponent<MeshRenderer>();
                 _mr.material.color = _teamColor;
-                Controllers.CharacterScript comp = go.GetComponent<Controllers.
-                CharacterScript>();
-
-                comp.Id = GameManager._gameManager.Id;
-                comp.TeamId = GameManager._gameManager.TeamId;
+                go.GetComponent<Controllers.CharacterScript>().AssignedTeam = this;
 
                 go.transform.rotation = Quaternion.Euler(0, Random.Range(0, 359), 0);
                 _worms.Add(go);

@@ -34,8 +34,6 @@ namespace Managers
 
         public int TeamId;
 
-        public int Id;
-
         private void Awake()
         {
             if (_gameManager == null)
@@ -62,12 +60,14 @@ namespace Managers
             Managers.EventManager._eventManager.OnDeathTrigger += OnWormDeath;
         }
 
-        public void OnWormDeath(int id, int teamId, bool activePlayer)
+        public void OnWormDeath(Managers.TeamManager team, bool activePlayer)
         {
             if (activePlayer)
             {
                 StartCoroutine(EndTurn());
             }
+
+            //Handle Player Death
         }
 
         private void Destroy()
@@ -84,14 +84,12 @@ namespace Managers
 
         private void Spawn()
         {
-            Id = 0;
             TeamId = 1;
             _teams = new List<TeamManager>();
             for (int i = 0; i < NumOfTeams; i++)
             {
                 _teams.Add(new TeamManager());
                 _teams[i].CreateTeam();
-                Id++;
                 TeamId++;
             }
             _team = 0;

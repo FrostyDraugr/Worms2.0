@@ -15,6 +15,17 @@ namespace WeaponSystems
             _radius = radius;
         }
 
+        //OnCollission
+        //Velocity = 0
+
+        private void OnCollisionEnter(Collision other)
+        {
+            Rigidbody rb = gameObject.GetComponent<Rigidbody>();
+            rb.velocity = Vector3.zero;
+            rb.useGravity = false;
+            rb.freezeRotation = true;
+        }
+
         public IEnumerator Throw()
         {
             if (_hit == false)

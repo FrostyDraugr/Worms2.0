@@ -19,7 +19,10 @@ namespace Controllers
         public Mode State;
 
         [SerializeField]
-        private float _speed;
+        private float _force;
+
+        [SerializeField]
+        private float _maxSpeed;
 
         [SerializeField]
         private float _rSpeed;
@@ -36,9 +39,7 @@ namespace Controllers
 
         private WeaponController _wc;
 
-        public int Id;
-
-        public int TeamId;
+        public Managers.TeamManager AssignedTeam;
 
         private void Awake()
         {
@@ -62,16 +63,17 @@ namespace Controllers
             Life -= dmg;
             if (Life <= 0 && State != Mode.dead)
             {
+                bool assigned;
                 if (State == Mode.inactive)
                 {
-                    Managers.EventManager._eventManager
-                    .DeathTrigger(Id, TeamId, false);
+                    assigned = false;
                 }
                 else
                 {
-                    Managers.EventManager._eventManager
-                    .DeathTrigger(Id, TeamId, true);
+                    assigned = true;
                 }
+                Managers.EventManager._eventManager
+                .DeathTrigger(AssignedTeam, assigned);
                 State = Mode.dead;
             }
         }
@@ -156,15 +158,19 @@ namespace Controllers
             {
                 if (_movePointsLeft > 0)
                 {
-                    _rb.AddForce(transform.forward * (dir * Time.deltaTime * _speed), ForceMode.Impulse);
-                    _movePointsLeft -= 1 * Time.fixedDeltaTime;
-
+                    /*_rb.AddForce(transform.forward * (dir * Time.deltaTime * _force),
+                    ForceMode.Force);
+                     _movePointsLeft -= 1 * Time.fixedDeltaTime; */
                     float y = _rb.velocity.y;
 
-                    _rb.velocity = _rb.velocity.normalized;
+                    //_rb.velocity = _rb.velocity.normalized * _maxSpeed;
 
-                    _rb.velocity = new Vector3(_rb.velocity.x,
-                    y, _rb.velocity.z);
+                    _rb.velocity = new Vector3(
+                    Mathf.Clamp(Time.deltaTime * _force * transform.forward.x * dir
+                    , -_maxSpeed, _maxSpeed),
+                    y,
+                    Mathf.Clamp(Time.deltaTime * _force * transform.forward.z * dir
+                    , -_maxSpeed, _maxSpeed));
 
                 }
                 else

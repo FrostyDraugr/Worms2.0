@@ -21,11 +21,9 @@ namespace Controllers
 
         public void InstWeapon()
         {
-            GameObject obj = Instantiate(Weapons[ChosenWeapon].Model);
-            obj.transform.SetParent(WeaponSlot.transform);
-            obj.transform.localPosition = Vector3.zero;
-            obj.transform.localRotation = obj.transform.rotation;
-            switch (Weapons[ChosenWeapon]._Type)
+            GameObject obj = Instantiate(Weapons[ChosenWeapon].Model, Vector3.zero,
+            Quaternion.identity, WeaponSlot.transform);
+            obj.transform.localPosition = Vector3.zero; switch (Weapons[ChosenWeapon]._Type)
             {
                 case WeaponSystems.Weapon.Type.Grenade:
                     WeaponSystems.Explosive ex = obj.GetComponent<WeaponSystems.Explosive>();
@@ -47,7 +45,6 @@ namespace Controllers
 
                     //Out of bounds because we don't end the current turn
                     GameObject grenade = WeaponSlot.transform.GetChild(0).gameObject;
-                    grenade.transform.SetParent(null);
 
                     SphereCollider sr = grenade.GetComponent<SphereCollider>();
                     sr.enabled = true;
@@ -55,6 +52,7 @@ namespace Controllers
                     Rigidbody rb = grenade.GetComponent<Rigidbody>();
 
                     rb.useGravity = true;
+                    rb.isKinematic = false;
 
                     Vector3 forceDirection = gameObject.transform.forward;
 

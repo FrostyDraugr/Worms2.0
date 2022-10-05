@@ -116,10 +116,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _movePoints: 20
   Life: 100
-  _state: 0
-  _speed: 300
+  State: 0
+  _force: 100
+  _maxSpeed: 5
   _rSpeed: 2
-  _jumpVelocity: 250
+  _jumpVelocity: 50
   _ws: {fileID: 0}
 --- !u!54 &473820563150615120
 Rigidbody:
@@ -129,7 +130,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 473820563150615129}
   serializedVersion: 2
-  m_Mass: 20
+  m_Mass: 5
   m_Drag: 2
   m_AngularDrag: 1
   m_UseGravity: 1
