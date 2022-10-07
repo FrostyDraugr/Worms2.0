@@ -21,6 +21,8 @@ namespace Managers
         [SerializeField] private int NumOfWorms;
 
         [SerializeField] private int _team;
+
+        private int _aliveTeams;
         public bool GameLive;
         public Controllers.CharacterScript _cs;
 
@@ -46,10 +48,41 @@ namespace Managers
             DestroyBool = true;
             GameLive = false;
             Destroyables = 0;
+            _aliveTeams = NumOfTeams;
             WorldGen.CellularAutomata.WorldGenerator.GenerateWorld();
             Spawn();
             StartCoroutine(IntroWait());
             Managers.EventManager._eventManager.OnDeathTrigger += OnWormDeath;
+        }
+
+        public void ReportTeamDeath()
+        {
+            _aliveTeams--;
+            if (_aliveTeams == 1)
+            {
+                for (int i = 0; i < NumOfTeams; i++)
+                {
+                    if (_teams[i].Alive == true)
+                    {
+                        Debug.Log(_teams[i].TeamName + " is Victorious");
+                    }
+                }
+                Time.timeScale = 0;
+            }
+        }
+
+        //Start Coroutine from non-monobehaviour script...
+        public void RemoveWorm(GameObject worm)
+        {
+            StartCoroutine(RemoveDeadWorm(worm));
+        }
+
+        //Why do I do this to myself
+        private IEnumerator RemoveDeadWorm(GameObject worm)
+        {
+            yield return new WaitForSeconds(5);
+            //Insert any death animation triggers here?
+            worm.SetActive(false);
         }
 
         public void OnWormDeath(Managers.TeamManager team, GameObject worm
@@ -111,18 +144,26 @@ namespace Managers
             GameLive = false;
             yield return new WaitForSeconds(7);
 
+            bool teamSelected = false;
 
-            if (_team == _teams.Count - 1)
-            {
-                _team = 0;
-            }
-            else
+            while (!teamSelected)
             {
                 _team++;
+
+                if (_team >= _teams.Count)
+                {
+                    _team = 0;
+                }
+
+                //Should make a get alive status func instead
+                if (_teams[_team].Alive == true)
+                {
+                    teamSelected = true;
+                }
             }
 
-            _teams[_team].nextWorm();
 
+            _teams[_team].nextWorm();
             _cs = _teams[_team].GetActiveWorm().
             GetComponent<Controllers.CharacterScript>();
             _cs.WormActive();

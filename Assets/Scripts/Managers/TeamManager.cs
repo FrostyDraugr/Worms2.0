@@ -11,6 +11,8 @@ namespace Managers
         private Color _teamColor;
         public bool Alive;
 
+        public string TeamName;
+
 
         public void CreateTeam(int numOfWorms, int TeamId)
         {
@@ -19,12 +21,13 @@ namespace Managers
             _activeWorm = 0;
             GameObject team = new GameObject();
             team.name = "Team " + (TeamId);
+            TeamName = team.name;
             _worms = new List<GameObject>();
             for (int i = 0; i < numOfWorms; i++)
             {
                 GameObject go = GameManager._gameManager.
                 GenerateWorm(team.transform);
-
+                go.name = "Team " + TeamId + " Worm: " + i;
                 MeshRenderer _mr = go.GetComponent<MeshRenderer>();
                 _mr.material.color = _teamColor;
                 go.GetComponent<Controllers.CharacterScript>().AssignedTeam = this;
@@ -43,13 +46,16 @@ namespace Managers
         {
             for (int i = 0; i < _worms.Count; i++)
             {
-                if (_worms[i] = worm)
+                if (_worms[i] == worm)
                 {
+                    GameManager._gameManager.RemoveWorm(worm);
                     _worms.RemoveAt(i);
                     if (_worms.Count == 0)
                     {
                         this.Alive = false;
+                        GameManager._gameManager.ReportTeamDeath();
                     }
+                    nextWorm();
                 }
             }
         }
