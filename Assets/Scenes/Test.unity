@@ -726,11 +726,21 @@ PrefabInstance:
     - target: {fileID: 7010161758371442717, guid: eddc74088dd8ff54f8bd67bba7294097,
         type: 3}
       propertyPath: NumOfTeams
-      value: 2
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 7010161758371442717, guid: eddc74088dd8ff54f8bd67bba7294097,
         type: 3}
       propertyPath: NumOfWorms
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7010161758371442717, guid: eddc74088dd8ff54f8bd67bba7294097,
+        type: 3}
+      propertyPath: _numOfTeams
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7010161758371442717, guid: eddc74088dd8ff54f8bd67bba7294097,
+        type: 3}
+      propertyPath: _numOfWorms
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 7010161758371442717, guid: eddc74088dd8ff54f8bd67bba7294097,

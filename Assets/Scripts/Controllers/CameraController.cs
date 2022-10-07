@@ -52,7 +52,7 @@ namespace Controllers
         }
         private void Start()
         {
-            _gm = Managers.GameManager._gameManager;
+            _gm = Managers.GameManager.GameMang;
         }
 
         private void FixedUpdate()
@@ -68,11 +68,11 @@ namespace Controllers
         {
             gameObject.transform.position =
             Vector3.Lerp(gameObject.transform.position,
-            _gm._cs.transform.position, _smoothness * Time.fixedDeltaTime);
+            _gm.CharacterStaticScript.transform.position, _smoothness * Time.fixedDeltaTime);
 
             gameObject.transform.rotation =
             Quaternion.Lerp(gameObject.transform.rotation,
-            _gm._cs.transform.rotation, _smoothness * Time.fixedDeltaTime);
+            _gm.CharacterStaticScript.transform.rotation, _smoothness * Time.fixedDeltaTime);
         }
     }
 }

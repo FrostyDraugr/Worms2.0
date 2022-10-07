@@ -10,7 +10,7 @@ namespace Managers
         private float _horizontal;
         private void Start()
         {
-            _gm = Managers.GameManager._gameManager;
+            _gm = Managers.GameManager.GameMang;
             _cm = Controllers.CameraController._cC;
         }
         void Update()
@@ -28,17 +28,17 @@ namespace Managers
             {
                 if (Input.GetButtonDown("Fire1"))
                 {
-                    _gm._cs.Attack();
+                    _gm.CharacterStaticScript.Attack();
                 }
 
                 if (Input.GetButtonDown("Fire2"))
                 {
-                    _gm._cs.SwitchWeapon();
+                    _gm.CharacterStaticScript.SwitchWeapon();
                 }
 
                 if (Input.GetButtonDown("Jump"))
                 {
-                    _gm._cs.Jump();
+                    _gm.CharacterStaticScript.Jump();
                 }
 
             }
@@ -51,12 +51,12 @@ namespace Managers
             {
                 if (_vertical != 0)
                 {
-                    _gm._cs.MoveVertical(_vertical);
+                    _gm.CharacterStaticScript.MoveVertical(_vertical);
                 }
 
                 if (_horizontal != 0)
                 {
-                    _gm._cs.RotateOnAxis(_horizontal);
+                    _gm.CharacterStaticScript.RotateOnAxis(_horizontal);
                 }
             }
         }

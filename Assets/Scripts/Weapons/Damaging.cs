@@ -7,7 +7,6 @@ namespace WeaponSystems
     {
         protected float _damage;
         protected float _lifeDuration;
-
         protected bool _hit;
 
         void Awake()

@@ -1,5 +1,4 @@
 using UnityEngine;
-using System.Collections.Generic;
 using System.Collections;
 
 namespace WeaponSystems
@@ -14,9 +13,6 @@ namespace WeaponSystems
             _lifeDuration = lifetime;
             _radius = radius;
         }
-
-        //OnCollission
-        //Velocity = 0
 
         private void OnCollisionEnter(Collision other)
         {

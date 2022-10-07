@@ -54,7 +54,7 @@ namespace Controllers
             _rb = gameObject.GetComponent<Rigidbody>();
             _distToGround = gameObject.GetComponent<CapsuleCollider>()
             .bounds.extents.y;
-            _gm = Managers.GameManager._gameManager;
+            _gm = Managers.GameManager.GameMang;
             _ws = gameObject.transform.GetChild(0).transform;
             _wc = gameObject.GetComponent<WeaponController>();
             _wc.ChosenWeapon = 0;
@@ -93,6 +93,7 @@ namespace Controllers
             {
                 _wc.Shoot();
                 StartCoroutine(_gm.EndTurn());
+                State = Mode.inactive;
             }
             else
             {

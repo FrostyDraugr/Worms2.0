@@ -18,4 +18,4 @@ MonoBehaviour:
   Model: {fileID: 3742748739083067511, guid: 9560cfe478da148459867aa2c651f985, type: 3}
   _Type: 1
   Lifetime: 5
-  Radius: 2
+  Radius: 3

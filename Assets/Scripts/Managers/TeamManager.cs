@@ -25,7 +25,7 @@ namespace Managers
             _worms = new List<GameObject>();
             for (int i = 0; i < numOfWorms; i++)
             {
-                GameObject go = GameManager._gameManager.
+                GameObject go = GameManager.GameMang.
                 GenerateWorm(team.transform);
                 go.name = "Team " + TeamId + " Worm: " + i;
                 MeshRenderer _mr = go.GetComponent<MeshRenderer>();
@@ -48,12 +48,12 @@ namespace Managers
             {
                 if (_worms[i] == worm)
                 {
-                    GameManager._gameManager.RemoveWorm(worm);
+                    GameManager.GameMang.RemoveWorm(worm);
                     _worms.RemoveAt(i);
                     if (_worms.Count == 0)
                     {
                         this.Alive = false;
-                        GameManager._gameManager.ReportTeamDeath();
+                        GameManager.GameMang.ReportTeamDeath();
                     }
                     nextWorm();
                 }

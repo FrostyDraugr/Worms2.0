@@ -6,25 +6,25 @@ namespace Managers
 {
     public class GameManager : MonoBehaviour
     {
-        public static GameManager _gameManager;
+        public static GameManager GameMang;
 
-        public List<TeamManager> _teams;
+        public List<TeamManager> Teams;
 
         //Keep track of the number of destroyable objects for physics calc
         public int Destroyables;
         public bool DestroyBool;
 
         [Range(2, 6)]
-        [SerializeField] private int NumOfTeams;
+        [SerializeField] private int _numOfTeams;
 
         [Range(1, 8)]
-        [SerializeField] private int NumOfWorms;
+        [SerializeField] private int _numOfWorms;
 
         [SerializeField] private int _team;
 
         private int _aliveTeams;
         public bool GameLive;
-        public Controllers.CharacterScript _cs;
+        public Controllers.CharacterScript CharacterStaticScript;
 
         [SerializeField] private GameObject Worm;
 
@@ -32,12 +32,12 @@ namespace Managers
 
         private void Awake()
         {
-            if (_gameManager == null)
+            if (GameMang == null)
             {
                 DontDestroyOnLoad(gameObject);
-                _gameManager = this;
+                GameMang = this;
             }
-            else if (_gameManager != this)
+            else if (GameMang != this)
             {
                 Destroy(gameObject);
             }
@@ -48,7 +48,7 @@ namespace Managers
             DestroyBool = true;
             GameLive = false;
             Destroyables = 0;
-            _aliveTeams = NumOfTeams;
+            _aliveTeams = _numOfTeams;
             WorldGen.CellularAutomata.WorldGenerator.GenerateWorld();
             Spawn();
             StartCoroutine(IntroWait());
@@ -60,14 +60,15 @@ namespace Managers
             _aliveTeams--;
             if (_aliveTeams == 1)
             {
-                for (int i = 0; i < NumOfTeams; i++)
+                for (int i = 0; i < _numOfTeams; i++)
                 {
-                    if (_teams[i].Alive == true)
+                    if (Teams[i].Alive == true)
                     {
-                        Debug.Log(_teams[i].TeamName + " is Victorious");
+                        Debug.Log(Teams[i].TeamName + " is Victorious");
                     }
                 }
-                Time.timeScale = 0;
+                Time.timeScale = 0.25f;
+                GameLive = false;
             }
         }
 
@@ -104,22 +105,22 @@ namespace Managers
         IEnumerator IntroWait()
         {
             yield return new WaitForSeconds(5);
-            _cs.WormActive();
+            CharacterStaticScript.WormActive();
             GameLive = true;
         }
 
         private void Spawn()
         {
             _teamId = 1;
-            _teams = new List<TeamManager>();
-            for (int i = 0; i < NumOfTeams; i++)
+            Teams = new List<TeamManager>();
+            for (int i = 0; i < _numOfTeams; i++)
             {
-                _teams.Add(new TeamManager());
-                _teams[i].CreateTeam(NumOfWorms, _teamId);
+                Teams.Add(new TeamManager());
+                Teams[i].CreateTeam(_numOfWorms, _teamId);
                 _teamId++;
             }
             _team = 0;
-            _cs = _teams[_team].GetActiveWorm().
+            CharacterStaticScript = Teams[_team].GetActiveWorm().
             GetComponent<Controllers.CharacterScript>();
         }
 
@@ -150,23 +151,23 @@ namespace Managers
             {
                 _team++;
 
-                if (_team >= _teams.Count)
+                if (_team >= Teams.Count)
                 {
                     _team = 0;
                 }
 
                 //Should make a get alive status func instead
-                if (_teams[_team].Alive == true)
+                if (Teams[_team].Alive == true)
                 {
                     teamSelected = true;
                 }
             }
 
 
-            _teams[_team].nextWorm();
-            _cs = _teams[_team].GetActiveWorm().
+            Teams[_team].nextWorm();
+            CharacterStaticScript = Teams[_team].GetActiveWorm().
             GetComponent<Controllers.CharacterScript>();
-            _cs.WormActive();
+            CharacterStaticScript.WormActive();
             GameLive = true;
         }
 

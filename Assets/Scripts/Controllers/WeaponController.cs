@@ -68,11 +68,19 @@ namespace Controllers
                     Weapons[ChosenWeapon].Lifetime,
                     Weapons[ChosenWeapon].Radius);
                     _projectileMass = Weapons[ChosenWeapon].Model.GetComponent<Rigidbody>().mass;
+
                     _sphere.transform.localScale =
                     new Vector3(Weapons[ChosenWeapon].Radius,
                     Weapons[ChosenWeapon].Radius,
-                    Weapons[ChosenWeapon].Radius);
+                    Weapons[ChosenWeapon].Radius) * 2;
                     _lineRenderer.enabled = true;
+
+                    break;
+
+                case WeaponSystems.Weapon.Type.Gun:
+                    WeaponSystems.Shooting gun = obj.GetComponent<WeaponSystems.Shooting>();
+                    gun.SetUp(Weapons[ChosenWeapon].Damage,
+                    Weapons[ChosenWeapon].Lifetime);
                     break;
 
                 default:
@@ -111,7 +119,6 @@ namespace Controllers
 
                 _sphere.SetActive(true);
 
-
                 if (Physics.Raycast(lastPoisition,
                 (point - lastPoisition).normalized,
                 out RaycastHit hit,
@@ -145,19 +152,7 @@ namespace Controllers
                     rb.useGravity = true;
                     rb.isKinematic = false;
 
-                    Vector3 forceDirection = gameObject.transform.forward;
-
-                    //Decrepit now that I'm doing the line tracker for the grenade.
-                    //Will be useful for the gun though, maybe
-                    /*RaycastHit hit;
-
-                    if (Physics.Raycast(gameObject.transform.position,
-                    gameObject.transform.forward, out hit, 500f))
-                    {
-                        forceDirection = (hit.point - WeaponSlot.transform.position).normalized;
-                    } */
-
-                    Vector3 forceToAdd = forceDirection * _throwForce
+                    Vector3 forceToAdd = gameObject.transform.forward * _throwForce
                     + transform.up * _throwUpForce;
                     rb.AddForce(forceToAdd, ForceMode.Impulse);
 
@@ -168,7 +163,10 @@ namespace Controllers
                     break;
 
                 case WeaponSystems.Weapon.Type.Gun:
-
+                    GameObject weapon = WeaponSlot.transform.GetChild(0).gameObject;
+                    int ammo = Weapons[ChosenWeapon].Ammo;
+                    StartCoroutine(weapon.GetComponent<WeaponSystems.Shooting>()
+                    .Fire(ammo, weapon.transform.GetChild(0).transform));
                     break;
 
                 default:

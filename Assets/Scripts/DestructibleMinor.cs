@@ -17,7 +17,7 @@ public class DestructibleMinor : MonoBehaviour
     void Awake()
     {
         _destroyed = false;
-        _gm = Managers.GameManager._gameManager;
+        _gm = Managers.GameManager.GameMang;
         _rb = gameObject.GetComponent<Rigidbody>();
     }
     public void Hit(float dmg, Vector3 point)
