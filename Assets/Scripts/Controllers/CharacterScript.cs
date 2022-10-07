@@ -46,6 +46,9 @@ namespace Controllers
             State = Mode.inactive;
         }
 
+        //Create an OnDisable and an OnEnable that turns on/off the WeaponController
+        //Instead of having a bool
+
         private void Start()
         {
             _rb = gameObject.GetComponent<Rigidbody>();
@@ -97,10 +100,12 @@ namespace Controllers
             }
         }
 
+        //Why is switch weapon in the characterScript, idiot
         public void SwitchWeapon()
         {
             if (State == Mode.combat)
             {
+                _wc.LineRenderer.enabled = false;
                 if (_wc.ChosenWeapon == _wc.Weapons.Count - 1)
                 {
                     _wc.ChosenWeapon = 0;
@@ -124,6 +129,7 @@ namespace Controllers
         {
             if (State == Mode.combat && _movePointsLeft > 0)
             {
+                _wc.LineRenderer.enabled = false;
                 EnterMoving();
             }
         }
@@ -148,7 +154,7 @@ namespace Controllers
             {
                 GameObject.Destroy(child.gameObject);
             }
-
+            _wc.LineRenderer.enabled = false;
             State = Mode.move;
         }
 

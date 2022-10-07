@@ -6,21 +6,17 @@ namespace Controllers
     {
         public static Controllers.CameraController _cC;
 
-        [SerializeField]
-        private float _smoothness;
+        [SerializeField] private float _smoothness;
 
         private Managers.GameManager _gm;
 
-        [SerializeField]
-        private Camera _cam;
+        [SerializeField] private Camera _cam;
 
         private float _zoom;
 
-        [SerializeField]
-        private float _stickMinZoom, _stickMaxZoom;
+        [SerializeField] private float _stickMinZoom, _stickMaxZoom;
 
-        [SerializeField]
-        private float _swivelMinZoom, _swivelMaxZoom;
+        [SerializeField] private float _swivelMinZoom, _swivelMaxZoom;
 
         private Transform _swivel, _stick;
         private void Awake()

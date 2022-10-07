@@ -13,26 +13,20 @@ namespace Managers
         //Keep track of the number of destroyable objects for physics calc
         public int Destroyables;
         public bool DestroyBool;
-        public bool inCombat;
 
         [Range(2, 6)]
-        public int NumOfTeams;
+        [SerializeField] private int NumOfTeams;
 
         [Range(1, 8)]
-        public int NumOfWorms;
+        [SerializeField] private int NumOfWorms;
 
-        //Control active worm
-        [SerializeField]
-        private int _team;
-
-        [SerializeField]
-        private int _wormTeam;
+        [SerializeField] private int _team;
         public bool GameLive;
         public Controllers.CharacterScript _cs;
 
-        public GameObject Worm;
+        [SerializeField] private GameObject Worm;
 
-        public int TeamId;
+        private int _teamId;
 
         private void Awake()
         {
@@ -47,10 +41,8 @@ namespace Managers
             }
         }
 
-        // Start is called before the first frame update
         private void Start()
         {
-            inCombat = false;
             DestroyBool = true;
             GameLive = false;
             Destroyables = 0;
@@ -85,13 +77,13 @@ namespace Managers
 
         private void Spawn()
         {
-            TeamId = 1;
+            _teamId = 1;
             _teams = new List<TeamManager>();
             for (int i = 0; i < NumOfTeams; i++)
             {
                 _teams.Add(new TeamManager());
-                _teams[i].CreateTeam();
-                TeamId++;
+                _teams[i].CreateTeam(NumOfWorms, _teamId);
+                _teamId++;
             }
             _team = 0;
             _cs = _teams[_team].GetActiveWorm().
@@ -100,8 +92,8 @@ namespace Managers
 
         public GameObject GenerateWorm(Transform transform)
         {
-            GameObject go = Instantiate(GameManager._gameManager.Worm
-            , FindSpawnPos(), Quaternion.identity, transform);
+            GameObject go = Instantiate(Worm, FindSpawnPos()
+            , Quaternion.identity, transform);
 
             return go;
         }

@@ -12,15 +12,15 @@ namespace Managers
         public bool Alive;
 
 
-        public void CreateTeam()
+        public void CreateTeam(int numOfWorms, int TeamId)
         {
             _teamColor = Random.ColorHSV(0f, 1f, 1f, 1f, 0.5f, 1f);
             Alive = true;
             _activeWorm = 0;
             GameObject team = new GameObject();
-            team.name = "Team " + (GameManager._gameManager.TeamId);
+            team.name = "Team " + (TeamId);
             _worms = new List<GameObject>();
-            for (int i = 0; i < GameManager._gameManager.NumOfWorms; i++)
+            for (int i = 0; i < numOfWorms; i++)
             {
                 GameObject go = GameManager._gameManager.
                 GenerateWorm(team.transform);
