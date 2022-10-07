@@ -160,6 +160,7 @@ MonoBehaviour:
   _throwUpForce: 10
   _bullet: {fileID: 2112913227696086285, guid: 43f07b259d83cb7488fe39bc5604af6e, type: 3}
   LineRenderer: {fileID: 8809123553189229317}
+  _sphere: {fileID: 8856352456242982839, guid: 5e6a5b8cbc2131249aab5a037ddc104f, type: 3}
   _linePoints: 25
   _timeBetweenPoints: 0.025
 --- !u!120 &8809123553189229317

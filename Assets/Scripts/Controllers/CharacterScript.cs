@@ -105,7 +105,7 @@ namespace Controllers
         {
             if (State == Mode.combat)
             {
-                _wc.LineRenderer.enabled = false;
+                _wc.UnDrawArch();
                 if (_wc.ChosenWeapon == _wc.Weapons.Count - 1)
                 {
                     _wc.ChosenWeapon = 0;
@@ -129,7 +129,7 @@ namespace Controllers
         {
             if (State == Mode.combat && _movePointsLeft > 0)
             {
-                _wc.LineRenderer.enabled = false;
+                _wc.UnDrawArch();
                 EnterMoving();
             }
         }
@@ -154,7 +154,7 @@ namespace Controllers
             {
                 GameObject.Destroy(child.gameObject);
             }
-            _wc.LineRenderer.enabled = false;
+            _wc.UnDrawArch();
             State = Mode.move;
         }
 

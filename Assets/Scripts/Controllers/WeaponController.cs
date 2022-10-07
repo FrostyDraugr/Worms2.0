@@ -13,8 +13,10 @@ namespace Controllers
         [SerializeField] private float _throwForce;
         [SerializeField] private float _throwUpForce;
         [SerializeField] private GameObject _bullet;
-        public LineRenderer LineRenderer;
+        public LineRenderer _lineRenderer;
         private float _projectileMass;
+
+        [SerializeField] private GameObject _sphere;
 
         [Header("Arch Line Controls")]
         [Range(10, 100)]
@@ -38,7 +40,18 @@ namespace Controllers
         }
         private void Start()
         {
-            LineRenderer = gameObject.GetComponent<LineRenderer>();
+            _lineRenderer = gameObject.GetComponent<LineRenderer>();
+
+            _sphere = Instantiate(_sphere, Vector3.zero,
+            Quaternion.identity, gameObject.transform);
+            _sphere.SetActive(false);
+
+        }
+
+        public void UnDrawArch()
+        {
+            _lineRenderer.enabled = false;
+            _sphere.SetActive(false);
         }
 
         public void InstWeapon()
@@ -55,11 +68,15 @@ namespace Controllers
                     Weapons[ChosenWeapon].Lifetime,
                     Weapons[ChosenWeapon].Radius);
                     _projectileMass = Weapons[ChosenWeapon].Model.GetComponent<Rigidbody>().mass;
-                    LineRenderer.enabled = true;
+                    _sphere.transform.localScale =
+                    new Vector3(Weapons[ChosenWeapon].Radius,
+                    Weapons[ChosenWeapon].Radius,
+                    Weapons[ChosenWeapon].Radius);
+                    _lineRenderer.enabled = true;
                     break;
 
                 default:
-                    LineRenderer.enabled = false;
+                    UnDrawArch();
                     break;
             }
         }
@@ -68,7 +85,7 @@ namespace Controllers
         //Limits this to one Update loop instead of one for every worm...
         private void Update()
         {
-            if (LineRenderer.enabled == true)
+            if (_lineRenderer.enabled == true)
             {
                 DrawArch();
             }
@@ -76,31 +93,38 @@ namespace Controllers
 
         private void DrawArch()
         {
-            LineRenderer.enabled = true;
-            LineRenderer.positionCount = Mathf.CeilToInt(_linePoints / _timeBetweenPoints) + 2;
+            _lineRenderer.enabled = true;
+            _lineRenderer.positionCount = Mathf.CeilToInt(_linePoints / _timeBetweenPoints) + 2;
             Vector3 startPosition = WeaponSlot.transform.position;
             Vector3 startVelocity = (gameObject.transform.forward * _throwForce + transform.up * _throwUpForce) / _projectileMass;
             int i = 0;
-            LineRenderer.SetPosition(i, startPosition);
+            _lineRenderer.SetPosition(i, startPosition);
             for (float time = 0; time < _linePoints; time += _timeBetweenPoints)
             {
                 i++;
                 Vector3 point = startPosition + time * startVelocity;
                 point.y = startPosition.y + startVelocity.y * time + (Physics.gravity.y * 0.5f * time * time);
 
-                LineRenderer.SetPosition(i, point);
+                _lineRenderer.SetPosition(i, point);
 
-                Vector3 lastPoisition = LineRenderer.GetPosition(i - 1);
+                Vector3 lastPoisition = _lineRenderer.GetPosition(i - 1);
+
+                _sphere.SetActive(true);
+
+
                 if (Physics.Raycast(lastPoisition,
                 (point - lastPoisition).normalized,
                 out RaycastHit hit,
                 (point - lastPoisition).magnitude,
                 _grenadeCollisionMask))
                 {
-                    LineRenderer.SetPosition(i, hit.point);
-                    LineRenderer.positionCount = i + 1;
-                    return;
+                    _sphere.transform.position = hit.point;
+                    _lineRenderer.SetPosition(i, hit.point);
+                    _lineRenderer.positionCount = i + 1;
+                    break;
                 }
+
+                _sphere.transform.position = _lineRenderer.GetPosition(i);
             }
 
         }
@@ -137,7 +161,7 @@ namespace Controllers
                     + transform.up * _throwUpForce;
                     rb.AddForce(forceToAdd, ForceMode.Impulse);
 
-                    LineRenderer.enabled = false;
+                    UnDrawArch();
 
                     StartCoroutine(grenade.GetComponent<WeaponSystems.Explosive>().Throw());
 
